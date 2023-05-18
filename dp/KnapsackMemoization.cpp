@@ -1,14 +1,15 @@
-#include<bits/stdc++.h>f
+#include<bits/stdc++.h>
 using namespace std;
-int fun(int *wt,int *val,int n,int w){
-	//base case
-	if(n==0 or w==0) return 0;
+static int mt[101][101];
+int fun(int *wt,int *val,int w,int n){
+	if(n==0||w==0) return 0;
+	if(mt[n-1][w-1]!=-1) return mt[n-1][w-1];
 	if(wt[n-1]<=w)
-		return max(val[n-1]+fun(wt,val,n-1,w-wt[n-1]),fun(wt,val,n-1,w));
-	else
-		return fun(wt,val,n-1,w);
+	return mt[n-1][w-1]=max(val[n-1]+fun(wt,val,w-wt[n-1],n-1),fun(wt,val,w,n-1));
+	else return mt[n-1][w-1]=fun(wt,val,w,n-1);
 }
 int main(){
+
 	int n,w;
 	cout<<"Enter the value of weight"<<endl;
 	cin>>w;
@@ -27,6 +28,9 @@ int main(){
 		cin>>val[i];
 	}
 
-	int ans=fun(wt,val,n,w);
-	cout<<"Final Answer "<<ans<<endl;
+	//filling -1 value in matric mt
+	memset(mt,-1,sizeof(mt));
+	int ans=fun(wt,val,w,n);
+	cout<<"final answer : "<<ans<<endl;
+
 }
